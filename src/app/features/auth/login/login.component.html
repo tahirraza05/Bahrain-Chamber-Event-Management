@@ -1,0 +1,35 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Bahrain Chamber</h1>
+      <h2>Event Management System</h2>
+    </div>
+    
+    <div class="login-content">
+      <p class="welcome-message">Welcome! Please sign in to continue.</p>
+      
+      <button 
+        class="btn-primary btn-sso" 
+        (click)="login()" 
+        [disabled]="isLoading">
+        <span *ngIf="!isLoading">
+          <svg width="20" height="20" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+            <path d="M11.5 0C5.149 0 0 5.149 0 11.5S5.149 23 11.5 23 23 17.851 23 11.5 17.851 0 11.5 0z" fill="#F25022"/>
+            <path d="M11.5 0C5.149 0 0 5.149 0 11.5S5.149 23 11.5 23 23 17.851 23 11.5 17.851 0 11.5 0z" fill="#7FBA00"/>
+            <path d="M11.5 0C5.149 0 0 5.149 0 11.5S5.149 23 11.5 23 23 17.851 23 11.5 17.851 0 11.5 0z" fill="#00A4EF"/>
+            <path d="M11.5 0C5.149 0 0 5.149 0 11.5S5.149 23 11.5 23 23 17.851 23 11.5 17.851 0 11.5 0z" fill="#FFB900"/>
+          </svg>
+          Sign in with Microsoft
+        </span>
+        <span *ngIf="isLoading">
+          <span class="spinner"></span>
+          Signing in...
+        </span>
+      </button>
+      
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>

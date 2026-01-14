@@ -1,0 +1,309 @@
+@import '../../../../assets/styles/variables.scss';
+
+.main-nav {
+  background-color: white;
+  box-shadow: $shadow-md;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  // Main Navigation Container
+  .nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-md $spacing-lg;
+  }
+
+  // Brand/Logo Section
+  .nav-brand {
+    .brand-link {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo-image {
+      height: 60px;
+      width: auto;
+      max-width: 300px;
+      object-fit: contain;
+    }
+
+    .logo-fallback {
+      display: none;
+      align-items: center;
+      gap: $spacing-md;
+    }
+
+    .logo-icon {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      
+      .logo-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #c8102e 0%, #003087 100%);
+        position: relative;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background: white;
+        }
+      }
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+      
+      .brand-arabic {
+        font-size: $font-size-lg;
+        font-weight: 600;
+        color: #003087;
+        font-family: 'Arial', sans-serif;
+      }
+      
+      .brand-english {
+        font-size: $font-size-md;
+        font-weight: 600;
+        color: #003087;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+
+  // Main Navigation Menu
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    flex: 1;
+    justify-content: center;
+    margin: 0 $spacing-xl;
+  }
+
+  .nav-link {
+    color: #003087;
+    text-decoration: none;
+    padding: $spacing-sm $spacing-md;
+    font-size: $font-size-md;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+    position: relative;
+
+    &:hover {
+      color: $error-color;
+    }
+
+    &.active {
+      color: $error-color;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 3px;
+        background-color: $error-color;
+      }
+    }
+  }
+
+  // User Profile Section
+  .user-profile-section {
+    position: relative;
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    cursor: pointer;
+    padding: $spacing-xs $spacing-md;
+    border-radius: $border-radius-sm;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: $background-color;
+    }
+
+    .profile-picture {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid $border-color;
+      object-fit: cover;
+    }
+
+    .profile-placeholder {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: $primary-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: white;
+      border: 2px solid $border-color;
+    }
+
+    .profile-name {
+      font-size: $font-size-md;
+      color: $text-primary;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    .dropdown-icon {
+      color: $text-secondary;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .profile-menu {
+    position: absolute;
+    top: calc(100% + $spacing-xs);
+    right: 0;
+    background: $surface-color;
+    border-radius: $border-radius-sm;
+    box-shadow: $shadow-md;
+    min-width: 200px;
+    overflow: hidden;
+    z-index: 1000;
+    border: 1px solid $border-color;
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      padding: $spacing-md;
+      cursor: pointer;
+      color: $text-primary;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: $background-color;
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: $text-secondary;
+      }
+
+      span {
+        font-size: $font-size-md;
+      }
+    }
+  }
+}
+
+// Print Styles - Hide navigation when printing
+@media print {
+  .main-nav {
+    display: none !important;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .main-nav {
+    .nav-menu {
+      gap: $spacing-md;
+      margin: 0 $spacing-md;
+    }
+
+    .nav-link {
+      font-size: $font-size-sm;
+      padding: $spacing-xs $spacing-sm;
+    }
+
+    .nav-brand {
+      .logo-image {
+        height: 50px;
+        max-width: 250px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    .nav-container {
+      flex-wrap: wrap;
+      padding: $spacing-sm $spacing-md;
+    }
+
+    .nav-brand {
+      .logo-image {
+        height: 45px;
+        max-width: 200px;
+      }
+
+      .logo-icon {
+        width: 45px;
+        height: 45px;
+        
+        .logo-circle {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      .brand-text {
+        .brand-arabic {
+          font-size: $font-size-md;
+        }
+        
+        .brand-english {
+          font-size: $font-size-sm;
+        }
+      }
+    }
+
+    .nav-menu {
+      order: 3;
+      width: 100%;
+      justify-content: flex-start;
+      margin-top: $spacing-sm;
+      margin-left: 0;
+      margin-right: 0;
+      overflow-x: auto;
+      padding: $spacing-sm 0;
+    }
+
+    .profile-name {
+      display: none;
+    }
+  }
+}

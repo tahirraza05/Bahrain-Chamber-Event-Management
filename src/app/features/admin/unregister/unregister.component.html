@@ -1,0 +1,173 @@
+<div class="unregister-container">
+  <div class="page-header">
+    <h1>Unregister Members</h1>
+  </div>
+
+  <div class="search-section">
+    <h2>Search Registered Member</h2>
+    <div class="search-input-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Search Type</mat-label>
+        <mat-select [(ngModel)]="searchType">
+          <mat-option value="cpr">CPR Number</mat-option>
+          <mat-option value="cr">CR Number</mat-option>
+          <mat-option value="membership">Membership Number</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="search-input">
+        <mat-label>Enter {{ searchType === 'cpr' ? 'CPR' : searchType === 'cr' ? 'CR' : 'Membership' }} Number</mat-label>
+        <input matInput [(ngModel)]="searchValue" (keyup.enter)="search()">
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="search()" [disabled]="isLoading">
+        Search
+      </button>
+    </div>
+
+    <div *ngIf="searchResults.length > 0" class="search-results">
+      <h3>Search Results</h3>
+      <div class="result-list">
+        <div 
+          *ngFor="let member of searchResults" 
+          class="result-item"
+          [class.selected]="selectedMember?.id === member.id"
+          (click)="selectMember(member)">
+          <div class="member-info">
+            <strong>{{ member.fullName }}</strong>
+            <div class="member-details">
+              <span>CPR: {{ member.cprNumber }}</span>
+              <span *ngIf="member.registrationDate">
+                Registered: {{ member.registrationDate | date:'short' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="selectedMember" class="selected-member-panel">
+      <h3>Selected Member</h3>
+      <div class="member-details-card">
+        <p><strong>Name:</strong> {{ selectedMember.fullName }}</p>
+        <p><strong>CPR:</strong> {{ selectedMember.cprNumber }}</p>
+        <p><strong>Membership:</strong> {{ selectedMember.membershipNumber }}</p>
+        <p *ngIf="selectedMember.registrationDate">
+          <strong>Registration Date:</strong> {{ selectedMember.registrationDate | date:'medium' }}
+        </p>
+      </div>
+      <button 
+        mat-raised-button 
+        color="warn" 
+        (click)="confirmUnregister()" 
+        [disabled]="isUnregistering">
+        Unregister Member
+      </button>
+    </div>
+  </div>
+
+  <div class="activity-log-section">
+    <h2>Registration Activity Log</h2>
+    
+    <div class="filters-section">
+      <mat-form-field appearance="outline">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Action Type</mat-label>
+        <mat-select [(ngModel)]="actionFilter">
+          <mat-option value="">All</mat-option>
+          <mat-option value="Register">Register</mat-option>
+          <mat-option value="Unregister">Unregister</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Member Name</mat-label>
+        <input matInput [(ngModel)]="memberNameFilter" placeholder="Search by name">
+      </mat-form-field>
+
+      <div class="filter-actions">
+        <button mat-button (click)="applyFilters()">Apply Filters</button>
+        <button mat-button (click)="clearFilters()">Clear</button>
+      </div>
+    </div>
+
+    <div class="activities-table-container">
+      <table mat-table [dataSource]="activities" class="activities-table">
+        <ng-container matColumnDef="timestamp">
+          <th mat-header-cell *matHeaderCellDef>Timestamp</th>
+          <td mat-cell *matCellDef="let activity">{{ activity.timestamp | date:'medium' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="memberName">
+          <th mat-header-cell *matHeaderCellDef>Member Name</th>
+          <td mat-cell *matCellDef="let activity">{{ activity.memberName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="cprNumber">
+          <th mat-header-cell *matHeaderCellDef>CPR Number</th>
+          <td mat-cell *matCellDef="let activity">{{ activity.memberCprNumber }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let activity">
+            <span class="badge" [ngClass]="getActionClass(activity.action)">
+              {{ activity.action }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="performedBy">
+          <th mat-header-cell *matHeaderCellDef>Performed By</th>
+          <td mat-cell *matCellDef="let activity">{{ activity.performedByName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let activity">
+            <span class="badge" [class.badge-success]="activity.status === 'success'" 
+                  [class.badge-error]="activity.status === 'failed'">
+              {{ activity.status | titlecase }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['timestamp', 'memberName', 'cprNumber', 'action', 'performedBy', 'status']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['timestamp', 'memberName', 'cprNumber', 'action', 'performedBy', 'status'];"></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Confirmation Dialog -->
+  <div class="modal-overlay" *ngIf="showConfirmDialog" (click)="showConfirmDialog = false">
+    <div class="confirm-dialog" (click)="$event.stopPropagation()">
+      <h3>Confirm Unregistration</h3>
+      <p>Are you sure you want to unregister <strong>{{ selectedMember?.fullName }}</strong>?</p>
+      <div class="dialog-actions">
+        <button mat-button (click)="showConfirmDialog = false">Cancel</button>
+        <button mat-raised-button color="warn" (click)="unregisterMember()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+</div>

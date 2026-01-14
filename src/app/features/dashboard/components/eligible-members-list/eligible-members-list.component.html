@@ -1,0 +1,48 @@
+<div class="data-table-container">
+  <table mat-table [dataSource]="members" class="members-table">
+    <ng-container matColumnDef="fullName">
+      <th mat-header-cell *matHeaderCellDef>Full Name</th>
+      <td mat-cell *matCellDef="let member">{{ member.fullName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="cprNumber">
+      <th mat-header-cell *matHeaderCellDef>CPR Number</th>
+      <td mat-cell *matCellDef="let member">{{ member.cprNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="membershipNumber">
+      <th mat-header-cell *matHeaderCellDef>Membership Number</th>
+      <td mat-cell *matCellDef="let member">{{ member.membershipNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let member">{{ member.email || '-' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let member">
+        <span class="badge" [class.badge-success]="member.isEligible">
+          {{ member.isEligible ? 'Eligible' : 'Not Eligible' }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let member">
+        <button mat-icon-button color="primary" (click)="viewRegistration(member.id)" matTooltip="View/Edit Registration">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <div *ngIf="members.length === 0" class="no-data">
+    No eligible members found
+  </div>
+</div>

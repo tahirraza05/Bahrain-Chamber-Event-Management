@@ -1,0 +1,129 @@
+<div class="search-section">
+  <h2>Search & Register Member</h2>
+  
+  <div class="search-input-group">
+    <mat-form-field appearance="outline" class="search-type-field">
+      <mat-label>Search Type</mat-label>
+      <mat-select [(ngModel)]="searchType" (selectionChange)="onSearchTypeChange()">
+        <mat-option value="cpr">CPR Number</mat-option>
+        <mat-option value="cr">CR Number</mat-option>
+        <mat-option value="membership">Membership Number</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="search-input">
+      <mat-label>Enter {{ searchType === 'cpr' ? 'CPR' : searchType === 'cr' ? 'CR' : 'Membership' }} Number</mat-label>
+      <input matInput [(ngModel)]="searchValue" (keyup.enter)="search()" placeholder="Enter number">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="search()" [disabled]="isSearching" class="search-button">
+      <span *ngIf="!isSearching">Search</span>
+      <span *ngIf="isSearching">Searching...</span>
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+</div>
+
+<!-- Member Details Popup -->
+<div class="member-popup-overlay" *ngIf="showPopup && selectedMemberDetails" (click)="closePopup()">
+  <div class="member-popup" (click)="$event.stopPropagation()">
+    <div class="popup-header">
+      <h2>Member Details</h2>
+      <button mat-icon-button (click)="closePopup()" class="close-button">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+    
+    <div class="popup-content" *ngIf="selectedMemberDetails">
+      <div class="member-info-section">
+        <div class="info-row">
+          <label>Name:</label>
+          <span>{{ selectedMemberDetails.fullName }}</span>
+        </div>
+        <div class="info-row">
+          <label>CPR Number:</label>
+          <span>{{ selectedMemberDetails.cprNumber }}</span>
+        </div>
+        <div class="info-row" *ngIf="selectedMemberDetails.gender">
+          <label>Gender:</label>
+          <span>{{ selectedMemberDetails.gender }}</span>
+        </div>
+        <div class="info-row" *ngIf="selectedMemberDetails.nationality">
+          <label>Nationality:</label>
+          <span>{{ selectedMemberDetails.nationality }}</span>
+        </div>
+        <div class="info-row" *ngIf="selectedMemberDetails.email">
+          <label>Email:</label>
+          <span>{{ selectedMemberDetails.email }}</span>
+        </div>
+        <div class="info-row" *ngIf="selectedMemberDetails.phone">
+          <label>Phone:</label>
+          <span>{{ selectedMemberDetails.phone }}</span>
+        </div>
+      </div>
+
+      <div class="memberships-section" *ngIf="selectedMemberDetails.memberships && selectedMemberDetails.memberships.length > 0">
+        <h3>Memberships</h3>
+        <div class="membership-list">
+          <div *ngFor="let membership of selectedMemberDetails.memberships" class="membership-item">
+            <div class="membership-header">
+              <strong>{{ membership.companyName }}</strong>
+              <span class="badge">{{ membership.memberRole }}</span>
+            </div>
+            <div class="membership-details">
+              <span>CR: {{ membership.companyCrNumber }}</span>
+              <span *ngIf="membership.sharePercentage">Share: {{ membership.sharePercentage }}%</span>
+              <span>Votes: {{ membership.votes }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cr-section" *ngIf="selectedMemberDetails.crDetails && selectedMemberDetails.crDetails.length > 0">
+        <h3>CR Details</h3>
+        <div class="cr-list">
+          <div *ngFor="let cr of selectedMemberDetails.crDetails" class="cr-item">
+            <div class="cr-header">
+              <strong>{{ cr.companyName }}</strong>
+              <span class="badge">{{ cr.position }}</span>
+            </div>
+            <div class="cr-details">
+              <span>CR: {{ cr.companyCrNumber }}</span>
+              <span>Votes: {{ cr.votes }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="total-votes" *ngIf="selectedMemberDetails.totalVotes">
+        <strong>Total Votes: {{ selectedMemberDetails.totalVotes }}</strong>
+      </div>
+    </div>
+
+    <div class="popup-actions" *ngIf="selectedMemberDetails">
+      <button mat-button (click)="closePopup()">Close</button>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="registerMember()" 
+        [disabled]="selectedMemberDetails.isRegistered"
+        *ngIf="!selectedMemberDetails.isRegistered">
+        Register
+      </button>
+      <button 
+        mat-raised-button 
+        disabled
+        *ngIf="selectedMemberDetails.isRegistered"
+        class="registered-button">
+        Registered
+      </button>
+      <button mat-raised-button color="accent" (click)="printMember()" class="print-button">
+        <span class="material-icons">print</span>
+        Print
+      </button>
+    </div>
+  </div>
+</div>

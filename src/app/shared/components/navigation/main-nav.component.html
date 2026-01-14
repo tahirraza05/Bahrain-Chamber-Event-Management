@@ -1,0 +1,64 @@
+<nav class="main-nav">
+  <!-- Main Navigation Bar -->
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/dashboard" class="brand-link">
+        <div class="logo-container">
+          <img 
+            src="assets/images/bahrain-chamber-logo.png" 
+            alt="Bahrain Chamber Logo" 
+            class="logo-image"
+            (error)="onLogoError($event)">
+          <div class="logo-fallback" style="display: none;">
+            <div class="logo-icon">
+              <div class="logo-circle"></div>
+            </div>
+            <div class="brand-text">
+              <span class="brand-arabic">غرفة البحرين</span>
+              <span class="brand-english">BAHRAIN CHAMBER</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    
+    <div class="nav-menu" *ngIf="currentUser">
+      <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">Dashboard</a>
+      <a 
+        routerLink="/admin/users" 
+        routerLinkActive="active" 
+        class="nav-link">
+        User Management
+      </a>
+      <a 
+        *ngIf="hasRole(userRoles.Admin) || hasRole(userRoles.SuperAdmin)" 
+        routerLink="/admin/crm-sync" 
+        routerLinkActive="active" 
+        class="nav-link">
+        Sync Current Event
+      </a>
+    </div>
+    
+    <div class="user-profile-section" *ngIf="currentUser">
+      <div class="user-profile" (click)="showProfileMenu = !showProfileMenu">
+        <img 
+          *ngIf="currentUser.profilePicture" 
+          [src]="currentUser.profilePicture" 
+          alt="Profile" 
+          class="profile-picture">
+        <div *ngIf="!currentUser.profilePicture" class="profile-placeholder">
+          {{ currentUser.name.charAt(0).toUpperCase() }}
+        </div>
+        <span class="profile-name">{{ currentUser.name }}</span>
+        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+      </div>
+      
+      <div class="profile-menu" *ngIf="showProfileMenu" (clickOutside)="showProfileMenu = false">
+        <div class="menu-item" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

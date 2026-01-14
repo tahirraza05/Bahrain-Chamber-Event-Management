@@ -1,0 +1,60 @@
+// Bahrain Chamber Theme Variables
+
+// Primary Colors
+$primary-color: #1a365d;
+$primary-light: #2c5282;
+$primary-dark: #0f2027;
+
+// Secondary Colors
+$secondary-color: #d4af37;
+$secondary-light: #f4d03f;
+$secondary-dark: #b8940f;
+
+// Status Colors
+$success-color: #27ae60;
+$warning-color: #f39c12;
+$error-color: #e74c3c;
+$info-color: #3498db;
+
+// Neutral Colors
+$background-color: #f5f7fa;
+$surface-color: #ffffff;
+$text-primary: #2c3e50;
+$text-secondary: #7f8c8d;
+$border-color: #e0e0e0;
+$divider-color: #e8e8e8;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+
+// Shadows
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+
+// Typography
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 24px;
+$font-size-xxl: 32px;
+
+// CSS Variables
+:root {
+  --primary-color: #{$primary-color};
+  --background-color: #{$background-color};
+  --surface-color: #{$surface-color};
+  --text-primary: #{$text-primary};
+}

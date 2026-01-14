@@ -1,0 +1,121 @@
+<div class="crm-sync-container">
+  <div class="page-header">
+    <h1>Sync Current Event</h1>
+  </div>
+
+  <div class="sync-control-panel">
+    <div class="sync-status-card">
+      <h2>Sync Status</h2>
+      <div class="status-info">
+        <div class="status-item">
+          <label>Last Sync:</label>
+          <span *ngIf="lastSyncStatus && lastSyncStatus.lastSyncAt">
+            {{ lastSyncStatus.lastSyncAt | date:'medium' }}
+          </span>
+          <span *ngIf="!lastSyncStatus?.lastSyncAt">Never</span>
+        </div>
+        <div class="status-item" *ngIf="lastSyncStatus">
+          <label>Status:</label>
+          <span class="badge" [ngClass]="getStatusClass(lastSyncStatus.status)">
+            {{ lastSyncStatus.status | titlecase }}
+          </span>
+        </div>
+        <div class="status-item" *ngIf="lastSyncStatus && lastSyncStatus.recordsSynced">
+          <label>Records Synced:</label>
+          <span>{{ lastSyncStatus.recordsSynced }}</span>
+        </div>
+      </div>
+      <button 
+        mat-raised-button 
+        color="warn" 
+        (click)="syncNow()" 
+        [disabled]="isSyncing"
+        class="sync-button">
+        <span *ngIf="!isSyncing">Sync Now</span>
+        <span *ngIf="isSyncing">Syncing...</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="currentEvent" class="event-info-section">
+    <h2>Current Event Information</h2>
+    <div class="event-cards">
+      <div class="event-card">
+        <label>Event Type</label>
+        <div class="card-value">{{ currentEvent.type }}</div>
+      </div>
+      <div class="event-card">
+        <label>Event Name</label>
+        <div class="card-value">{{ currentEvent.name }}</div>
+      </div>
+      <div class="event-card">
+        <label>Event Date</label>
+        <div class="card-value">{{ currentEvent.eventDate | date:'mediumDate' }}</div>
+      </div>
+      <div class="event-card">
+        <label>Status</label>
+        <div class="card-value">
+          <span class="badge" [ngClass]="'status-' + currentEvent.status.toLowerCase()">
+            {{ currentEvent.status }}
+          </span>
+        </div>
+      </div>
+      <div class="event-card">
+        <label>Eligible Members</label>
+        <div class="card-value">{{ currentEvent.totalEligibleMembers }}</div>
+      </div>
+      <div class="event-card">
+        <label>Registered</label>
+        <div class="card-value">{{ currentEvent.registeredMembers }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sync-history-section">
+    <h2>Sync History</h2>
+    <div class="history-table-container">
+      <table mat-table [dataSource]="syncHistory" class="history-table">
+        <ng-container matColumnDef="timestamp">
+          <th mat-header-cell *matHeaderCellDef>Timestamp</th>
+          <td mat-cell *matCellDef="let sync">
+            {{ sync.lastSyncAt | date:'medium' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let sync">
+            <span class="badge" [ngClass]="getStatusClass(sync.status)">
+              {{ sync.status | titlecase }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="recordsSynced">
+          <th mat-header-cell *matHeaderCellDef>Records Synced</th>
+          <td mat-cell *matCellDef="let sync">
+            {{ sync.recordsSynced || '-' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="errorMessage">
+          <th mat-header-cell *matHeaderCellDef>Error</th>
+          <td mat-cell *matCellDef="let sync">
+            {{ sync.errorMessage || '-' }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['timestamp', 'status', 'recordsSynced', 'errorMessage']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['timestamp', 'status', 'recordsSynced', 'errorMessage'];"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+</div>

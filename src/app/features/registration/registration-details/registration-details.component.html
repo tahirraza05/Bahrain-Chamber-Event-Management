@@ -1,0 +1,96 @@
+<div class="modal-overlay" *ngIf="isVisible" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Member Registration</h2>
+      <button class="close-button" (click)="closeModal()">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+    <div *ngIf="!isLoading && memberDetails" class="modal-body">
+      <div class="member-info-section">
+        <h3>{{ memberDetails.fullName }}</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>CPR Number:</label>
+            <span>{{ memberDetails.cprNumber }}</span>
+          </div>
+          <div class="info-item">
+            <label>Membership Number:</label>
+            <span>{{ memberDetails.membershipNumber }}</span>
+          </div>
+          <div class="info-item" *ngIf="memberDetails.email">
+            <label>Email:</label>
+            <span>{{ memberDetails.email }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="memberships-section" *ngIf="memberDetails.memberships.length > 0">
+        <h4>Memberships (Shareholder)</h4>
+        <table class="details-table">
+          <thead>
+            <tr>
+              <th>Company Name</th>
+              <th>CR Number</th>
+              <th>Role</th>
+              <th>Votes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let membership of memberDetails.memberships">
+              <td>{{ membership.companyName }}</td>
+              <td>{{ membership.companyCrNumber }}</td>
+              <td>{{ membership.memberRole }}</td>
+              <td>{{ membership.votes }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cr-section" *ngIf="memberDetails.crDetails.length > 0">
+        <h4>CR Details (Board Director)</h4>
+        <table class="details-table">
+          <thead>
+            <tr>
+              <th>Company Name</th>
+              <th>CR Number</th>
+              <th>Position</th>
+              <th>Votes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cr of memberDetails.crDetails">
+              <td>{{ cr.companyName }}</td>
+              <td>{{ cr.companyCrNumber }}</td>
+              <td>{{ cr.position }}</td>
+              <td>{{ cr.votes }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="votes-summary">
+        <div class="total-votes">
+          <label>Total Votes Available:</label>
+          <span class="votes-value">{{ memberDetails.totalVotes }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="closeModal()" [disabled]="isLoading">
+          Cancel
+        </button>
+        <button class="btn-primary" (click)="confirmRegistration()" [disabled]="isLoading">
+          Confirm Registration
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

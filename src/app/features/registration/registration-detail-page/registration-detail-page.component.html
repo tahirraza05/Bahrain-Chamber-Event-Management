@@ -1,0 +1,273 @@
+<div class="registration-detail-page">
+  <div class="page-header">
+    <div class="header-actions">
+      <button mat-button (click)="goBack()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+        Back
+      </button>
+      <h1>Registration Detail</h1>
+    </div>
+    <div class="action-buttons">
+      <button mat-raised-button color="warn" (click)="onUnregisterButtonClick()" [disabled]="isLoading || isUnregistered">
+        <mat-icon>person_remove</mat-icon>
+        Unregister
+      </button>
+      <button mat-raised-button color="primary" (click)="saveRegistration()" [disabled]="isLoading">
+        <mat-icon>save</mat-icon>
+        Save
+      </button>
+      <button mat-raised-button color="accent" (click)="calculateTotalVotes()" [disabled]="isLoading">
+        <mat-icon>calculate</mat-icon>
+        Recalculate
+      </button>
+      <button mat-raised-button color="warn" (click)="runReport()" [disabled]="isLoading">
+        <mat-icon>description</mat-icon>
+        Run Report
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <div *ngIf="!isLoading && memberDetails" class="registration-content">
+    <!-- Summary Section -->
+    <div class="form-section">
+      <h2>Summary</h2>
+      <div class="form-grid">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput [(ngModel)]="firstName">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput [(ngModel)]="lastName">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Attended</mat-label>
+            <mat-select [(ngModel)]="attendanceStatus">
+              <mat-option value="Yes">Yes</mat-option>
+              <mat-option value="No">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Pre-Registration</mat-label>
+            <mat-select [(ngModel)]="preRegistration">
+              <mat-option [value]="true">Yes</mat-option>
+              <mat-option [value]="false">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Unregister</mat-label>
+            <mat-select [(ngModel)]="isUnregistered" (selectionChange)="onUnregisterToggleChange()">
+              <mat-option [value]="true">Yes</mat-option>
+              <mat-option [value]="false">No</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Attendance Date & Time</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="attendanceDateTime">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Total Votes Taken</mat-label>
+            <input matInput [value]="memberDetails.totalVotesTaken || 0" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" [(ngModel)]="email">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Event</mat-label>
+            <input matInput [value]="currentEventName" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Membership Taken</mat-label>
+            <input matInput [value]="memberDetails.membershipTaken || 0" readonly>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Total Memberships</mat-label>
+            <input matInput [value]="memberDetails.totalMemberships || 0" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Total Vote</mat-label>
+            <input matInput [value]="memberDetails.totalVotes || 0" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Passport Number</mat-label>
+            <input matInput [(ngModel)]="passportNumber">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>CPR Number</mat-label>
+            <input matInput [(ngModel)]="cprNumber" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>GCC No.</mat-label>
+            <input matInput [(ngModel)]="gccNumber">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- Eligible Membership Section -->
+    <div class="form-section">
+      <h2>Eligible Membership</h2>
+      <div class="table-container">
+        <table mat-table [dataSource]="memberDetails.eligibleMemberships || []" class="memberships-table">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox
+                [checked]="areAllSelected()"
+                [indeterminate]="isSomeSelected()"
+                (change)="toggleAll($event.checked)">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let membership">
+              <mat-checkbox
+                [checked]="isMembershipSelected(membership.id)"
+                (change)="toggleMembershipSelection(membership.id)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="isAttended">
+            <th mat-header-cell *matHeaderCellDef>Is Attended</th>
+            <td mat-cell *matCellDef="let membership">
+              <span class="badge" [class.attended]="membership.isAttended" [class.not-attended]="!membership.isAttended">
+                {{ membership.isAttended ? 'Yes' : 'No' }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="attendedBy">
+            <th mat-header-cell *matHeaderCellDef>Attended By</th>
+            <td mat-cell *matCellDef="let membership">{{ membership.attendedBy || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="event">
+            <th mat-header-cell *matHeaderCellDef>Event</th>
+            <td mat-cell *matCellDef="let membership">{{ membership.eventName || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let membership">
+              <div class="name-cell">
+                <div>{{ membership.companyName }}</div>
+                <div class="arabic-name" *ngIf="membership.companyNameArabic">{{ membership.companyNameArabic }}</div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="crNumber">
+            <th mat-header-cell *matHeaderCellDef>CR No.</th>
+            <td mat-cell *matCellDef="let membership">{{ membership.companyCrNumber }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="membershipNumber">
+            <th mat-header-cell *matHeaderCellDef>Membership No.</th>
+            <td mat-cell *matCellDef="let membership">{{ membership.membershipNumber }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef>Start Date</th>
+            <td mat-cell *matCellDef="let membership">
+              {{ membership.membershipStartDate | date:'shortDate' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef>End Date</th>
+            <td mat-cell *matCellDef="let membership">
+              {{ membership.membershipEndDate | date:'shortDate' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="companyCapital">
+            <th mat-header-cell *matHeaderCellDef>Company Capital</th>
+            <td mat-cell *matCellDef="let membership">
+              {{ membership.companyCapital | number }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="votes">
+            <th mat-header-cell *matHeaderCellDef>No. of votes</th>
+            <td mat-cell *matCellDef="let membership">{{ membership.votes }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <div class="votes-summary" *ngIf="memberDetails.eligibleMemberships && memberDetails.eligibleMemberships.length > 0">
+        <div class="summary-item">
+          <label>Selected Votes:</label>
+          <span class="votes-value">{{ getSelectedVotesTotal() }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Total Available Votes:</label>
+          <span class="votes-value">{{ memberDetails.totalVotes }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unregister Confirmation Dialog -->
+  <div class="modal-overlay" *ngIf="showUnregisterDialog" (click)="cancelUnregister()">
+    <div class="confirm-dialog" (click)="$event.stopPropagation()">
+      <div class="dialog-header">
+        <h3>Unregister Attendee</h3>
+        <button mat-icon-button (click)="cancelUnregister()" class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="dialog-content">
+        <p>Do you want to unregister the Attendee?</p>
+      </div>
+      <div class="dialog-actions">
+        <button mat-button (click)="cancelUnregister()">Cancel</button>
+        <button mat-raised-button color="warn" (click)="confirmUnregister()" [disabled]="isLoading">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

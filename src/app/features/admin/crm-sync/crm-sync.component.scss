@@ -1,0 +1,144 @@
+@import '../../../../assets/styles/variables.scss';
+
+.crm-sync-container {
+  padding: $spacing-lg;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: $spacing-xl;
+
+  h1 {
+    font-size: $font-size-xxl;
+    color: $primary-color;
+  }
+}
+
+.sync-control-panel {
+  margin-bottom: $spacing-xl;
+}
+
+.sync-status-card {
+  background: $surface-color;
+  border-radius: $border-radius-md;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+
+  h2 {
+    margin-bottom: $spacing-md;
+    color: $text-primary;
+  }
+
+  .status-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-md;
+    margin-bottom: $spacing-lg;
+
+    .status-item {
+      label {
+        display: block;
+        font-size: $font-size-sm;
+        color: $text-secondary;
+        margin-bottom: $spacing-xs;
+      }
+
+      span {
+        font-size: $font-size-md;
+        color: $text-primary;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .sync-button {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+.event-info-section {
+  margin-bottom: $spacing-xl;
+
+  h2 {
+    margin-bottom: $spacing-md;
+    color: $text-primary;
+  }
+
+  .event-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-md;
+  }
+
+  .event-card {
+    background: $surface-color;
+    border-radius: $border-radius-md;
+    padding: $spacing-lg;
+    box-shadow: $shadow-sm;
+
+    label {
+      display: block;
+      font-size: $font-size-sm;
+      color: $text-secondary;
+      margin-bottom: $spacing-sm;
+    }
+
+    .card-value {
+      font-size: $font-size-lg;
+      color: $primary-color;
+      font-weight: 500;
+    }
+  }
+}
+
+.sync-history-section {
+  background: $surface-color;
+  border-radius: $border-radius-md;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+
+  h2 {
+    margin-bottom: $spacing-md;
+    color: $text-primary;
+  }
+}
+
+.history-table-container {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+
+  th {
+    background-color: $primary-color;
+    color: white;
+    font-weight: 500;
+  }
+
+  td, th {
+    padding: $spacing-md;
+  }
+
+  tr:hover {
+    background-color: $background-color;
+  }
+}
+
+.error-message {
+  padding: $spacing-md;
+  background-color: rgba($error-color, 0.1);
+  color: $error-color;
+  border-radius: $border-radius-sm;
+  margin-top: $spacing-lg;
+}
+
+.success-message {
+  padding: $spacing-md;
+  background-color: rgba($success-color, 0.1);
+  color: $success-color;
+  border-radius: $border-radius-sm;
+  margin-top: $spacing-lg;
+}

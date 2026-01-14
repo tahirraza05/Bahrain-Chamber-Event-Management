@@ -1,0 +1,14 @@
+@import '../assets/styles/variables.scss';
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: $background-color;
+}
+
+// Hide navigation when printing
+@media print {
+  app-main-nav {
+    display: none !important;
+  }
+}

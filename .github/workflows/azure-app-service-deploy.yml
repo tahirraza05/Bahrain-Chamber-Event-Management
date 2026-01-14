@@ -1,0 +1,52 @@
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18.x'
+  AZURE_WEBAPP_NAME: bahrain-chamber-uat
+  AZURE_RESOURCE_GROUP: rg-bahrain-chamber
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build application
+      run: npm run build:prod:iis
+      env:
+        NODE_OPTIONS: '--max_old_space_size=4096'
+
+    - name: Create deployment package
+      run: |
+        cd dist/bahrain-chamber-app
+        zip -r ../../deploy.zip .
+        cd ../..
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ./deploy.zip

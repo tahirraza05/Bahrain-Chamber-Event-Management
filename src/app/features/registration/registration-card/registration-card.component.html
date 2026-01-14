@@ -1,0 +1,111 @@
+<div class="registration-card-page">
+  <div class="print-actions" *ngIf="!isLoading">
+    <button mat-raised-button color="primary" (click)="printCard()">
+      <mat-icon>print</mat-icon>
+      Print Card
+    </button>
+    <button mat-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && memberDetails" class="registration-card print-page">
+    <!-- Header Section -->
+    <div class="card-header">
+      <div class="header-left">
+        <div class="logo-section">
+          <div class="logo-text">
+            <div class="logo-arabic">غرفة البحرين</div>
+            <div class="logo-english">BAHRAIN CHAMBER</div>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="chamber-title-arabic">غرفة تجارة وصناعة البحرين</div>
+        <div class="chamber-title-english">Bahrain Chamber of Commerce And Industry</div>
+        <div class="card-title-arabic">بطاقة تسجيل {{ currentEvent?.name || '2022 Election' }}</div>
+        <div class="card-title-english">Registration Card {{ currentEvent?.name || '2022 Election' }}</div>
+        <div class="card-date">{{ getFormattedDate() }}</div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="card-body">
+      <!-- Top Info Bar -->
+      <div class="top-info-bar">
+        <div class="printed-by">
+          Printed By {{ currentUser?.name || 'Prtest #' }}
+        </div>
+        <div class="page-info">
+          <div class="info-item">
+            <div class="info-label-arabic">التاريخ</div>
+            <div class="info-label-english">Date</div>
+            <div class="info-value">{{ currentDate | date:'M/d/yyyy' }}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label-arabic">الصفحة</div>
+            <div class="info-label-english">Page</div>
+            <div class="info-value">{{ currentPage }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Votes Display -->
+      <div class="votes-display">
+        <div class="votes-box">
+          <span class="votes-number">{{ getTotalVotes() }}</span>
+        </div>
+        <div class="votes-label">
+          <span class="votes-label-arabic">عدد الاصوات :</span>
+          <span class="votes-label-english">Number of Votes:</span>
+        </div>
+      </div>
+
+      <!-- Registration Details Table -->
+      <div class="registration-table">
+        <div class="table-header">
+          <div class="table-col time-col">الوقت :<br>Time:</div>
+          <div class="table-col id-col">رقم الهوية<br>ID Number</div>
+          <div class="table-col num-col">الرقم<br>Number</div>
+          <div class="table-col name-col">الاسم :<br>Name:</div>
+          <div class="table-col membership-col">السجل<br>Membership</div>
+          <div class="table-col record-col">السجل<br>Record</div>
+        </div>
+        
+        <div class="table-row" *ngIf="memberDetails">
+          <div class="table-col time-col">{{ memberDetails.attendanceDateTime ? (memberDetails.attendanceDateTime | date:'shortTime') : (currentDate | date:'shortTime') }}</div>
+          <div class="table-col id-col">{{ memberDetails.cprNumber || memberDetails.passportNumber || memberDetails.gccNumber || '-' }}</div>
+          <div class="table-col num-col">- 1</div>
+          <div class="table-col name-col">{{ memberDetails.fullName }}</div>
+          <div class="table-col membership-col">{{ memberDetails.membershipNumber || '-' }}</div>
+          <div class="table-col record-col">{{ memberDetails.id }}</div>
+        </div>
+
+        <!-- Additional Row for Company Info -->
+        <div class="table-row company-row" *ngIf="hasEligibleMemberships()">
+          <div class="table-col time-col">{{ currentUser?.name || 'Prtest #' }}</div>
+          <div class="table-col id-col">
+            <ng-container *ngIf="getFirstMembership()">
+              {{ (getFirstMembership().companyCapital | number) || '250,002' }} Legal Representative
+            </ng-container>
+          </div>
+          <div class="table-col num-col"></div>
+          <div class="table-col name-col">
+            <ng-container *ngIf="getFirstMembership()">
+              {{ getFirstMembership().companyNameArabic || getFirstMembership().companyName }}
+            </ng-container>
+          </div>
+          <div class="table-col membership-col"></div>
+          <div class="table-col record-col">{{ getTotalVotes() }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

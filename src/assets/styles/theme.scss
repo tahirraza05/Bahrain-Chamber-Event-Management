@@ -1,0 +1,20 @@
+@import './variables.scss';
+
+// Basic theme styles
+.card {
+  background: $surface-color;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}

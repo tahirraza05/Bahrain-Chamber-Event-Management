@@ -1,0 +1,127 @@
+@import '../../../assets/styles/variables.scss';
+
+.dashboard-container {
+  padding: $spacing-lg;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: $spacing-xl;
+
+  h1 {
+    font-size: $font-size-xxl;
+    color: $primary-color;
+    margin-bottom: $spacing-sm;
+  }
+
+  .event-info {
+    display: flex;
+    gap: $spacing-md;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .event-type,
+    .event-date {
+      padding: $spacing-xs $spacing-md;
+      background: $background-color;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-sm;
+      color: $text-secondary;
+    }
+
+    .event-status {
+      padding: $spacing-xs $spacing-md;
+      border-radius: $border-radius-sm;
+      font-size: $font-size-sm;
+      font-weight: 500;
+
+      &.status-active {
+        background: rgba($success-color, 0.1);
+        color: $success-color;
+      }
+
+      &.status-upcoming {
+        background: rgba($info-color, 0.1);
+        color: $info-color;
+      }
+
+      &.status-completed {
+        background: rgba($text-secondary, 0.1);
+        color: $text-secondary;
+      }
+    }
+  }
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+}
+
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+
+  .chart-card {
+    background: $surface-color;
+    border-radius: $border-radius-md;
+    padding: $spacing-md;
+    box-shadow: $shadow-sm;
+
+    h3 {
+      margin-bottom: $spacing-sm;
+      color: $text-primary;
+      font-size: $font-size-md;
+    }
+  }
+}
+
+.lists-section {
+  background: $surface-color;
+  border-radius: $border-radius-md;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+
+  .tabs {
+    display: flex;
+    gap: $spacing-sm;
+    border-bottom: 2px solid $divider-color;
+    margin-bottom: $spacing-lg;
+  }
+
+  .tab-button {
+    padding: $spacing-md $spacing-lg;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: $font-size-md;
+    color: $text-secondary;
+    transition: all 0.3s;
+
+    &:hover {
+      color: $primary-color;
+    }
+
+    &.active {
+      color: $primary-color;
+      border-bottom-color: $primary-color;
+      font-weight: 500;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+}

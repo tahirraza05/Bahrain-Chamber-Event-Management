@@ -1,0 +1,29 @@
+@import '../../../../../assets/styles/variables.scss';
+
+.data-table-container {
+  overflow-x: auto;
+}
+
+.members-table {
+  width: 100%;
+
+  th {
+    background-color: $primary-color;
+    color: white;
+    font-weight: 500;
+  }
+
+  td, th {
+    padding: $spacing-md;
+  }
+
+  tr:hover {
+    background-color: $background-color;
+  }
+}
+
+.no-data {
+  padding: $spacing-xl;
+  text-align: center;
+  color: $text-secondary;
+}

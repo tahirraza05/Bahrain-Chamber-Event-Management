@@ -1,0 +1,113 @@
+<div class="dashboard-container">
+  <div class="page-header" *ngIf="currentEvent">
+    <h1>{{ currentEvent.name }}</h1>
+    <div class="event-info">
+      <span class="event-type">{{ currentEvent.type }}</span>
+      <span class="event-date">{{ currentEvent.eventDate | date:'mediumDate' }}</span>
+      <span class="event-status" [class]="'status-' + currentEvent.status.toLowerCase()">
+        {{ currentEvent.status }}
+      </span>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-value">{{ totalEligible }}</div>
+      <div class="stat-label">Eligible Members</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value">{{ totalRegistered }}</div>
+      <div class="stat-label">Registered</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-value">{{ totalAttendees }}</div>
+      <div class="stat-label">Attendees</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🗳️</div>
+      <div class="stat-value">{{ totalVotes }}</div>
+      <div class="stat-label">Total Votes</div>
+    </div>
+  </div>
+
+  <div class="charts-section">
+    <div class="chart-card">
+      <h3>Registration Status</h3>
+      <div style="height: 180px; display: flex; align-items: center; justify-content: center;">
+        <div *ngIf="currentEvent" style="text-align: center;">
+          <div style="font-size: 36px; color: #27ae60; font-weight: bold;">{{ totalRegistered }}</div>
+          <div style="color: #7f8c8d; font-size: 14px;">Registered</div>
+          <div style="margin-top: 12px; font-size: 18px; color: #e74c3c;">{{ totalEligible - totalRegistered }}</div>
+          <div style="color: #7f8c8d; font-size: 14px;">Not Registered</div>
+        </div>
+        <div *ngIf="!currentEvent" style="color: #7f8c8d;">Loading...</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Attendance Overview</h3>
+      <div style="height: 180px; display: flex; align-items: center; justify-content: center;">
+        <div *ngIf="currentEvent" style="text-align: center;">
+          <div style="font-size: 36px; color: #3498db; font-weight: bold;">{{ totalAttendees }}</div>
+          <div style="color: #7f8c8d; font-size: 14px;">Attended</div>
+          <div style="margin-top: 12px; font-size: 18px; color: #f39c12;">{{ totalRegistered - totalAttendees }}</div>
+          <div style="color: #7f8c8d; font-size: 14px;">Registered but Not Attended</div>
+        </div>
+        <div *ngIf="!currentEvent" style="color: #7f8c8d;">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+  <app-member-search (memberSelected)="onMemberSelected($event)"></app-member-search>
+
+  <app-registration-details
+    [memberId]="selectedMemberId"
+    [isVisible]="showRegistrationModal"
+    (close)="closeRegistrationModal()"
+    (registered)="onMemberRegistered()">
+  </app-registration-details>
+
+  <div class="lists-section">
+    <div class="tabs">
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'eligible'"
+        (click)="onTabChange('eligible')">
+        Eligible Members
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'attendees'"
+        (click)="onTabChange('attendees')">
+        Attendees
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTab === 'registered'"
+        (click)="onTabChange('registered')">
+        Registered Members
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <app-eligible-members-list 
+        *ngIf="activeTab === 'eligible'"
+        [members]="eligibleMembers">
+      </app-eligible-members-list>
+      
+      <app-attendees-list 
+        *ngIf="activeTab === 'attendees'"
+        [members]="attendees">
+      </app-attendees-list>
+      
+      <app-registered-members-list 
+        *ngIf="activeTab === 'registered'"
+        [members]="registeredMembers">
+      </app-registered-members-list>
+    </div>
+  </div>
+</div>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>

@@ -1,0 +1,259 @@
+@import '../../../../assets/styles/variables.scss';
+
+.registration-detail-page {
+  padding: $spacing-lg;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-xl;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: $font-size-xxl;
+      color: $primary-color;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+  }
+}
+
+.error-message {
+  padding: $spacing-md;
+  background-color: rgba($error-color, 0.1);
+  color: $error-color;
+  border-radius: $border-radius-md;
+  margin-bottom: $spacing-lg;
+  border-left: 4px solid $error-color;
+}
+
+.success-message {
+  padding: $spacing-md;
+  background-color: rgba($success-color, 0.1);
+  color: $success-color;
+  border-radius: $border-radius-md;
+  margin-bottom: $spacing-lg;
+  border-left: 4px solid $success-color;
+}
+
+.registration-content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.form-section {
+  background: $surface-color;
+  border-radius: $border-radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-md;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: $spacing-lg;
+    color: $primary-color;
+    font-size: $font-size-xl;
+    border-bottom: 2px solid $divider-color;
+    padding-bottom: $spacing-sm;
+  }
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-md;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-bottom: $spacing-lg;
+}
+
+.memberships-table {
+  width: 100%;
+
+  th {
+    background-color: $primary-color;
+    color: white;
+    font-weight: 500;
+    padding: $spacing-md;
+  }
+
+  td {
+    padding: $spacing-md;
+  }
+
+  tr:hover {
+    background-color: $background-color;
+  }
+}
+
+.name-cell {
+  .arabic-name {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin-top: $spacing-xs;
+  }
+}
+
+.badge {
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-sm;
+  font-weight: 500;
+
+  &.attended {
+    background-color: rgba($success-color, 0.1);
+    color: $success-color;
+  }
+
+  &.not-attended {
+    background-color: rgba($text-secondary, 0.1);
+    color: $text-secondary;
+  }
+}
+
+.votes-summary {
+  display: flex;
+  gap: $spacing-xl;
+  padding: $spacing-lg;
+  background-color: $background-color;
+  border-radius: $border-radius-md;
+  margin-top: $spacing-lg;
+
+  .summary-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    label {
+      font-weight: 500;
+      color: $text-primary;
+    }
+
+    .votes-value {
+      font-size: $font-size-xl;
+      font-weight: bold;
+      color: $primary-color;
+    }
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.confirm-dialog {
+  background: $surface-color;
+  border-radius: $border-radius-lg;
+  padding: 0;
+  min-width: 400px;
+  max-width: 500px;
+  box-shadow: $shadow-lg;
+
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-lg;
+    border-bottom: 1px solid $divider-color;
+
+    h3 {
+      margin: 0;
+      color: $text-primary;
+      font-size: $font-size-xl;
+    }
+
+    .close-button {
+      margin-left: auto;
+    }
+  }
+
+  .dialog-content {
+    padding: $spacing-xl;
+
+    p {
+      margin: 0;
+      color: $text-primary;
+      font-size: $font-size-md;
+    }
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-md;
+    padding: $spacing-lg;
+    border-top: 1px solid $divider-color;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-buttons {
+    width: 100%;
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .votes-summary {
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  .confirm-dialog {
+    min-width: 90%;
+    margin: $spacing-md;
+  }
+}

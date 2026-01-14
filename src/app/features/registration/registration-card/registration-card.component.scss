@@ -1,0 +1,408 @@
+@import '../../../../assets/styles/variables.scss';
+
+.registration-card-page {
+  padding: $spacing-lg;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+
+  @media print {
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+  }
+}
+
+.print-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+  padding: $spacing-md;
+  background: $surface-color;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+
+  @media print {
+    display: none;
+  }
+}
+
+.error-message {
+  padding: $spacing-md;
+  background-color: rgba($error-color, 0.1);
+  color: $error-color;
+  border-radius: $border-radius-md;
+  margin-bottom: $spacing-lg;
+}
+
+.registration-card {
+  background: white;
+  padding: $spacing-xl;
+  box-shadow: $shadow-lg;
+  font-family: 'Arial', sans-serif;
+
+  @media print {
+    box-shadow: none;
+    padding: 20px;
+    page-break-after: always;
+  }
+}
+
+.print-page {
+  @media print {
+    @page {
+      size: A4;
+      margin: 1cm;
+    }
+  }
+}
+
+// Header Section
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-xl;
+  padding-bottom: $spacing-lg;
+  border-bottom: 2px solid #003087;
+
+  .header-left {
+    flex: 0 0 auto;
+  }
+
+  .header-right {
+    flex: 1;
+    text-align: right;
+    padding-left: $spacing-xl;
+  }
+
+  .logo-section {
+    .logo-text {
+      .logo-arabic {
+        font-size: 24px;
+        font-weight: 600;
+        color: #003087;
+        margin-bottom: 4px;
+        font-family: 'Arial', sans-serif;
+      }
+
+      .logo-english {
+        font-size: 18px;
+        font-weight: 600;
+        color: #003087;
+        letter-spacing: 1px;
+      }
+    }
+  }
+
+  .chamber-title-arabic {
+    font-size: 18px;
+    font-weight: 600;
+    color: #003087;
+    margin-bottom: 4px;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .chamber-title-english {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: 8px;
+  }
+
+  .card-title-arabic {
+    font-size: 16px;
+    font-weight: 600;
+    color: #003087;
+    margin-bottom: 4px;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .card-title-english {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-primary;
+    margin-bottom: 8px;
+  }
+
+  .card-date {
+    font-size: 13px;
+    color: $text-secondary;
+    margin-top: 4px;
+  }
+}
+
+// Top Info Bar
+.top-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-xl;
+  padding-bottom: $spacing-md;
+  border-bottom: 1px solid $divider-color;
+
+  .printed-by {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+  }
+
+  .page-info {
+    display: flex;
+    gap: $spacing-lg;
+
+    .info-item {
+      text-align: right;
+
+      .info-label-arabic {
+        font-size: 12px;
+        color: $text-secondary;
+        font-family: 'Arial', sans-serif;
+      }
+
+      .info-label-english {
+        font-size: 11px;
+        color: $text-secondary;
+        margin-bottom: 4px;
+      }
+
+      .info-value {
+        font-size: $font-size-md;
+        font-weight: 500;
+        color: $text-primary;
+        margin-top: 2px;
+      }
+    }
+  }
+}
+
+// Votes Display
+.votes-display {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-xl;
+  padding: $spacing-lg;
+  background: $background-color;
+  border-radius: $border-radius-sm;
+
+  .votes-box {
+    width: 120px;
+    height: 120px;
+    background: white;
+    border: 2px solid #003087;
+    border-radius: $border-radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .votes-number {
+      font-size: 48px;
+      font-weight: bold;
+      color: #003087;
+    }
+  }
+
+  .votes-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .votes-label-arabic {
+      font-size: 18px;
+      font-weight: 600;
+      color: $text-primary;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .votes-label-english {
+      font-size: 16px;
+      font-weight: 500;
+      color: $text-secondary;
+    }
+  }
+}
+
+// Registration Table
+.registration-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: $spacing-lg;
+
+  .table-header {
+    display: flex;
+    background: #4a90e2;
+    color: white;
+    font-weight: 600;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+
+    .table-col {
+      padding: 12px 8px;
+      font-size: 13px;
+      text-align: center;
+      border-right: 1px solid rgba(255, 255, 255, 0.3);
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+
+  .table-row {
+    display: flex;
+    border-bottom: 1px solid $divider-color;
+    background: white;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.company-row {
+      background: $background-color;
+    }
+
+    .table-col {
+      padding: 10px 8px;
+      font-size: 13px;
+      text-align: center;
+      border-right: 1px solid $divider-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-wrap: break-word;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+
+  // Column widths
+  .time-col {
+    flex: 0 0 100px;
+    min-width: 100px;
+  }
+
+  .id-col {
+    flex: 0 0 120px;
+    min-width: 120px;
+  }
+
+  .num-col {
+    flex: 0 0 80px;
+    min-width: 80px;
+  }
+
+  .name-col {
+    flex: 1 1 200px;
+    min-width: 200px;
+    text-align: right;
+    padding-right: 12px;
+  }
+
+  .membership-col {
+    flex: 0 0 100px;
+    min-width: 100px;
+  }
+
+  .record-col {
+    flex: 0 0 100px;
+    min-width: 100px;
+  }
+}
+
+// Print Styles
+@media print {
+  .registration-card-page {
+    background: white;
+  }
+
+  .registration-card {
+    background: white;
+    box-shadow: none;
+    border: none;
+  }
+
+  .card-header {
+    border-bottom: 2px solid #003087;
+  }
+
+  .top-info-bar {
+    border-bottom: 1px solid #ccc;
+  }
+
+  .votes-display {
+    background: #f5f5f5;
+    page-break-inside: avoid;
+  }
+
+  .registration-table {
+    page-break-inside: avoid;
+
+    .table-header {
+      background: #4a90e2 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .table-row {
+      page-break-inside: avoid;
+    }
+  }
+
+  // Hide non-essential elements when printing
+  .print-actions,
+  app-loading-spinner,
+  .error-message {
+    display: none !important;
+  }
+
+  // Ensure proper page breaks
+  .registration-card {
+    page-break-after: always;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .registration-card-page {
+    padding: $spacing-md;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .header-right {
+      padding-left: 0;
+      text-align: left;
+    }
+  }
+
+  .votes-display {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .votes-box {
+      width: 100px;
+      height: 100px;
+
+      .votes-number {
+        font-size: 36px;
+      }
+    }
+  }
+
+  .registration-table {
+    .table-header,
+    .table-row {
+      flex-wrap: wrap;
+    }
+
+    .table-col {
+      flex: 1 1 50%;
+      min-width: 50%;
+    }
+  }
+}
